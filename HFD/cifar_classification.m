@@ -67,9 +67,11 @@ load('./datasets/cifar-10-batches-mat/test_batch.mat'); X_test = double(data)'; 
 
 %% Preprocess the images
 [inputd, n] = size(X);
-mean_data = mean(X, 2);
-std_data = std(X,0,2);
-std_data(std_data==0) = 1;
+%mean_data = mean(X, 2);
+%std_data = std(X,0,2);
+%std_data(std_data==0) = 1;
+mean_data = 0.5;
+std_data = 0.5;
 X = bsxfun(@minus, X, mean_data);
 X = bsxfun(@rdivide,X, std_data);
 X_test = bsxfun(@minus, X_test, mean_data);
