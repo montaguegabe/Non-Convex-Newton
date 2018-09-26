@@ -27,8 +27,8 @@ function [params, options] = subsampled_tr_cg(model,X, y,X_test, y_test, lambda,
 
 layersizes = model.layersizes;
 numlayers = model.numlayers;
-noProps = 1;
-noMVPs = 1;
+noProps = 0;
+noMVPs = 0;
 n = size(X,2);
 sz = floor(0.05*n);
 psize = layersizes(1,2:(numlayers+1))*layersizes(1,1:numlayers)' + sum(layersizes(2:(numlayers+1)));
@@ -150,7 +150,7 @@ for iter = cur+1: cur + max_iters
     tr_loss = ll + 0.5 * lambda * (params'*params);
     grad = grad + lambda*params;
     HessV = @(V) hess(V)+lambda*V;
-    noProps = noProps + size(X,2);
+    noProps = noProps + 2 * size(X,2);
     te_loss_err = compute_model(model, params, X_test, y_test);
     te_loss = te_loss_err(1); te_err = te_loss_err(2);
     
@@ -185,8 +185,8 @@ for iter = cur+1: cur + max_iters
         end
         [s,m, num_cg, iflag] = cg_steihaug(HessV, grad, delta, steihaugParams, s0 );
         fprintf('Steihaug solution: %s\n',iflag);
-        noProps = noProps + num_cg*2*size(x_sample,2);
-        noMVPs = noMVPs + num_cg;
+        noProps = noProps + (num_cg + 2) * 2 * size(x_sample, 2);
+        noMVPs = noMVPs + num_cg + 2;
         if m >= 0
             s = 0;
             break;

@@ -97,7 +97,8 @@ while((tst > terminate) && (it <=  maxit) && norm(x) <=  hatdel)
 end %
 if it > maxit; iflag = 'MX'; end;
 
-num_cg = it;
+% Return the number of loops performed
+num_cg = it - 1;
 p = x;
 m = tr_model(p);
 %
