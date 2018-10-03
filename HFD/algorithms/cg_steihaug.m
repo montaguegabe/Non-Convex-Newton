@@ -44,7 +44,7 @@ z   = r;
 rho = z'*r;
 tst = norm(r);
 flag  = '';
-terminate = errtol*norm(r);   it = 1;    hatdel = delta*1;%(1-1.d-6);
+terminate = errtol*norm(r);   it = 0;    hatdel = delta*1;%(1-1.d-6);
 rhoold = 1.0d0;
 if iprnt > 0
     fprintf(1,'\n\tThis is an output of the CG-Steihaug method. \n\tDelta = %7.1e \n', delta);
@@ -53,8 +53,9 @@ end
 flag = 'We do not know ';
 if tst <= terminate; flag  = 'Small ||g||    '; end
 
-while((tst > terminate) && (it <=  maxit) && norm(x) <=  hatdel)
+while((tst > terminate) && (it <  maxit) && norm(x) <=  hatdel)
     %
+    it  = it + 1;
     if(it == 1)
         p = z;
     else
@@ -93,12 +94,11 @@ while((tst > terminate) && (it <=  maxit) && norm(x) <=  hatdel)
     rhoold = rho;
     z   = r;
     rho = z'*r;
-    it  = it + 1;
 end %
-if it > maxit; iflag = 'MX'; end;
+if it >= maxit; iflag = 'MX'; end;
 
 % Return the number of loops performed
-num_cg = it - 1;
+num_cg = it;
 p = x;
 m = tr_model(p);
 %
