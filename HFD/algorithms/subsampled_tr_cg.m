@@ -151,21 +151,7 @@ for iter = cur+1: cur + max_iters
     grad = grad + lambda*params;
     HessV = @(V) hess(V)+lambda*V;
     noProps = noProps + 2 * size(X,2);
-    te_loss_err = compute_model(model, params, X_test, y_test);
-    te_loss = te_loss_err(1); te_err = te_loss_err(2);
     
-    options.tr_losses(iter) = tr_loss;
-    options.tr_errs(iter) = tr_err;
-    options.te_losses(iter) = te_loss;
-    options.te_errs(iter) = te_err;
-    options.tr_grad(iter) = norm(grad,Inf);
-    options.tr_noProps(iter) = noProps;
-    options.tr_noMVPs(iter) = noMVPs;
-    options.tr_times(iter) = toc + cur_time;
-    fprintf('\nIter: %d, time = %g s\n', iter, options.tr_times(iter));
-    fprintf('training loss + reg: %g, grad: %g(max), %g(norm)\n', tr_loss, norm(grad,Inf), norm(grad,2));
-    fprintf('training err: %g\n', tr_err);
-    fprintf('test loss: %g, test err: %g\n', te_loss, te_err);
     if norm(grad,Inf) <= 1E-16
         fprintf('Grad too small: %g\n',norm(grad,Inf));
         break;
@@ -215,6 +201,22 @@ for iter = cur+1: cur + max_iters
             break;
         end
     end
+    
+    te_loss_err = compute_model(model, params, X_test, y_test);
+    te_loss = te_loss_err(1); te_err = te_loss_err(2);
+    options.tr_losses(iter) = tr_loss;
+    options.tr_errs(iter) = tr_err;
+    options.te_losses(iter) = te_loss;
+    options.te_errs(iter) = te_err;
+    options.tr_grad(iter) = norm(grad,Inf);
+    options.tr_noProps(iter) = noProps;
+    options.tr_noMVPs(iter) = noMVPs;
+    options.tr_times(iter) = toc + cur_time;
+    fprintf('\nIter: %d, time = %g s\n', iter, options.tr_times(iter));
+    fprintf('training loss + reg: %g, grad: %g(max), %g(norm)\n', tr_loss, norm(grad,Inf), norm(grad,2));
+    fprintf('training err: %g\n', tr_err);
+    fprintf('Propagations: %d\n', noProps);
+    fprintf('test loss: %g, test err: %g\n', te_loss, te_err);
 end
 options.params = params;
 options.cur_iter = iter;
