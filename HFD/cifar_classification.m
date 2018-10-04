@@ -56,14 +56,21 @@ addpath(genpath(pwd));
 rng(seed);
 
 %% Read the data --- X: d x n, y: c x n
-load('./datasets/cifar-10-batches-mat/data_batch_1.mat'); data1 = data; labels1 = labels;
-load('./datasets/cifar-10-batches-mat/data_batch_2.mat'); data2 = data; labels2 = labels;
-load('./datasets/cifar-10-batches-mat/data_batch_3.mat'); data3 = data; labels3 = labels;
-load('./datasets/cifar-10-batches-mat/data_batch_4.mat'); data4 = data; labels4 = labels;
-load('./datasets/cifar-10-batches-mat/data_batch_5.mat'); data5 = data; labels5 = labels;
-X = double([data1; data2; data3; data4; data5])';
-y = getClassLabels([labels1; labels2; labels3; labels4; labels5])';
-load('./datasets/cifar-10-batches-mat/test_batch.mat'); X_test = double(data)'; y_test = getClassLabels(labels)';
+%load('./datasets/cifar-10-batches-mat/data_batch_1.mat'); data1 = data; labels1 = labels;
+%load('./datasets/cifar-10-batches-mat/data_batch_2.mat'); data2 = data; labels2 = labels;
+%load('./datasets/cifar-10-batches-mat/data_batch_3.mat'); data3 = data; labels3 = labels;
+%load('./datasets/cifar-10-batches-mat/data_batch_4.mat'); data4 = data; labels4 = labels;
+%load('./datasets/cifar-10-batches-mat/data_batch_5.mat'); data5 = data; labels5 = labels;
+%X = double([data1; data2; data3; data4; data5])';
+%y = getClassLabels([labels1; labels2; labels3; labels4; labels5])';
+load('./datasets/cifar-10-python/X_train.mat');
+load('./datasets/cifar-10-python/y_train.mat');
+load('./datasets/cifar-10-python/X_test.mat');
+load('./datasets/cifar-10-python/y_test.mat');
+%X_test = double(data)';
+%y_test = getClassLabels(labels)';
+
+
 
 %% Preprocess the images
 [inputd, n] = size(X);
@@ -72,10 +79,10 @@ load('./datasets/cifar-10-batches-mat/test_batch.mat'); X_test = double(data)'; 
 %std_data(std_data==0) = 1;
 mean_data = 127.5;
 std_data = 127.5;
-X = bsxfun(@minus, X, mean_data);
-X = bsxfun(@rdivide,X, std_data);
-X_test = bsxfun(@minus, X_test, mean_data);
-X_test = bsxfun(@rdivide,X_test, std_data);
+%X = bsxfun(@minus, X, mean_data);
+%X = bsxfun(@rdivide,X, std_data);
+%X_test = bsxfun(@minus, X_test, mean_data);
+%X_test = bsxfun(@rdivide,X_test, std_data);
 
 %% Specify the Neural Network Model
 outputd = size(y,1);
