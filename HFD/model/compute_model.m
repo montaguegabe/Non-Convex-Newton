@@ -79,7 +79,7 @@ if nargout <=2
     if strcmp(model.type, 'mse')
         perr = sum(sum((y - zi).^2))/n;
     elseif strcmp(model.type, 'classification')
-        [~,labels] = max(zi);
+        [~,labels] = max(xi);
         [~,truelabels] = max(y);
         perr = mean(truelabels ~= labels);
     end
