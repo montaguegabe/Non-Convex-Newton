@@ -39,7 +39,8 @@ x  = zeros(n,1);
 if ~isempty(x0)
     x = x0;
 end
-r = -g - H(x);
+H_x = H(x);
+r = -g - H_x;
 z   = r;
 rho = z'*r;
 tst = norm(r);
@@ -56,6 +57,7 @@ if tst <= terminate; flag  = 'Small ||g||    '; end
 while((tst > terminate) && (it <  maxit) && norm(x) <=  hatdel)
     %
     it  = it + 1;
+    fprintf('Attempt to solve Steihaug.\n')
     if(it == 1)
         p = z;
     else
@@ -85,8 +87,16 @@ while((tst > terminate) && (it <  maxit) && norm(x) <=  hatdel)
     x   =  x + alpha*p;
     r   =  r - alpha*w;
     tst = norm(r);
-    if tst <= terminate; flag = '||r|| < test   '; iflag = 'RS'; break; end;
-    if norm(x) >=  hatdel; flag = 'close to the boundary'; iflag = 'TR'; break;end
+    if tst <= terminate
+        flag = '||r|| < test   ';
+        iflag = 'RS';
+        break;
+    end
+    if norm(x) >=  hatdel
+        flag = 'close to the boundary';
+        iflag = 'TR';
+        break;
+    end
     
     if iprnt > 0
         fprintf(1,' %3i    %14.8e   %s  \n', it, tst, flag);

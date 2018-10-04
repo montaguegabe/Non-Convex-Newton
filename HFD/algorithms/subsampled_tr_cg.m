@@ -141,9 +141,9 @@ for iter = cur+1: cur + max_iters
         iter = iter - 1;
         break;
     end
-    idx = randsample(n, sz);
-    x_sample = X(:,idx);
-    y_sample = y(:,idx);
+    %idx = randsample(n, sz);
+    x_sample = X(:,1:2500);
+    y_sample = y(:,1:2500);
     [~, ~, hess,~] = compute_model(model, params, x_sample, y_sample);
     [ll_err, grad] = compute_model(model, params, X,y);
     ll = ll_err(1); tr_err = ll_err(2);
@@ -166,12 +166,12 @@ for iter = cur+1: cur + max_iters
     while true
         steihaugParams = [1e-9, 250, 0];
         if fail_count == 0
-            s0 = randn(psize,1);
+            s0 = ones(psize,1);
             s0 = 0.99*delta*s0/norm(s0);
         end
         [s,m, num_cg, iflag] = cg_steihaug(HessV, grad, delta, steihaugParams, s0 );
         fprintf('Steihaug solution: %s\n',iflag);
-        noProps = noProps + (num_cg + 2) * 2 * size(x_sample, 2);
+        noProps = noProps + (num_cg + 2)* 2 * size(x_sample, 2);
         noMVPs = noMVPs + num_cg + 2;
         if m >= 0
             s = 0;

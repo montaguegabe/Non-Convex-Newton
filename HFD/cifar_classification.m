@@ -95,7 +95,7 @@ lambda = 0; % l2 regularization
 
 %% Initialize the Model
 if init == 0
-    initial_guess = zeros(psize,1); sub_dir = ['/zeros_', num2str(seed)];
+    initial_guess = zeros(psize,1)+0.5; sub_dir = ['/zeros_', num2str(seed)];
     fprintf('\n\nZero Initialization! \n\n');
 elseif init == 1
     initial_guess = randn(psize,1); initial_guess = initial_guess/norm(initial_guess); sub_dir = ['/randn_normalized_', num2str(seed)];
